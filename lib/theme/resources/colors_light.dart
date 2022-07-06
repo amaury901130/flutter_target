@@ -41,4 +41,7 @@ class ColorsLight implements AppColors {
 
   @override
   Color get warning => const Color(0xFFF0C738);
+
+  @override
+  Color get onError => const Color(0xFFFFFFFF);
 }

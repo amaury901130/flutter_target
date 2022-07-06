@@ -16,6 +16,7 @@ abstract class AppColors {
   abstract final Color success;
   abstract final Color warning;
   abstract final Color error;
+  abstract final Color onError;
 
   abstract final Color shadowColor;
   abstract final Color dividerColor;

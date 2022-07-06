@@ -71,7 +71,7 @@ abstract class LocalTheme {
         onSecondary: colors.onSecondary,
         onSurface: colors.onSurface,
         onBackground: colors.onBackground,
-        onError: colors.error,
+        onError: colors.onError,
       );
 
   final primaryFont = 'Roboto Regular';
