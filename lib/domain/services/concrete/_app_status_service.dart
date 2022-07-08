@@ -8,12 +8,11 @@ class AppStatusServiceImpl extends AppStatusService {
       StreamController<SyncStateNotifier<bool>>();
 
   AppStatusServiceImpl() {
-    isOnline = _streamStatusController.stream;
+    streamIsOnline = _streamStatusController.stream;
   }
 
   @override
   void checkStatus() {
     _streamStatusController.add(SyncStateNotifier(isLoading: true));
-
   }
 }
