@@ -5,7 +5,7 @@ import 'package:rootstrap_target/util/sync_state_notifier.dart';
 
 class AppStatusServiceImpl extends AppStatusService {
   final _streamStatusController =
-      StreamController<SyncResponseNotifier<bool>>();
+      StreamController<SyncStateNotifier<bool>>();
 
   AppStatusServiceImpl() {
     isOnline = _streamStatusController.stream;
@@ -13,7 +13,7 @@ class AppStatusServiceImpl extends AppStatusService {
 
   @override
   void checkStatus() {
-    _streamStatusController.add(SyncResponseNotifier(isLoading: true));
-    
+    _streamStatusController.add(SyncStateNotifier(isLoading: true));
+
   }
 }

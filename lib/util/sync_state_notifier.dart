@@ -1,9 +1,9 @@
-class SyncResponseNotifier<T> {
+class SyncStateNotifier<T> {
   T? data;
   bool isLoading;
   bool hasError;
 
-  SyncResponseNotifier({
+  SyncStateNotifier({
     this.data,
     this.isLoading = false,
     this.hasError = false,
