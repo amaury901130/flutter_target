@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:rootstrap_target/component_init.dart';
+import 'package:rootstrap_target/globals/preferences.dart';
+import 'package:rootstrap_target/resources/locale/localize.dart';
+import 'package:rootstrap_target/resources/resources.dart';
 import 'package:rootstrap_target/theme/variants/light.dart';
 
-void main() {
+void main() async {
+  await Component.initialize();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  Locale get appLang =>
+      LangExtensions.langLocale[Preferences.instance.appLang] ??
+      LangExtensions.defaultLocaleLang;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: LightTheme().data,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      locale: appLang,
+      supportedLocales: LangExtensions.supportedLang,
+      localizationsDelegates: LangExtensions.appLocalizationDelegates,
+      home: MyHomePage(
+        title: context.getString(Localize.app_name),
+      ),
     );
   }
 }
