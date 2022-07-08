@@ -10,6 +10,8 @@ enum Lang { es, en }
 
 enum Localize {
   app_name,
+  default_connection_error,
+  message_connection_success,
 }
 
 class Localization {

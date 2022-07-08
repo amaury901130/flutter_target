@@ -25,10 +25,10 @@ class ApiRequest {
 
   http.Client get _client => http.Client();
 
-  Uri get _url => Uri.https(basePath, path);
+  Uri get _url => Uri.https(basePath, '/api/v1/$path');
 
   ApiRequest({
-    this.basePath = 'target-mvd-api.herokuapp.com/api/v1/',
+    this.basePath = 'target-mvd-api.herokuapp.com',
     this.path = '',
     this.header,
     this.parameters,

@@ -7,7 +7,7 @@ abstract class AppStatusService {
   static void register(AppStatusService appStatusService) =>
       getIt.registerSingleton<AppStatusService>(appStatusService);
 
-  late Stream<SyncStateNotifier<bool>> streamIsOnline;
+  Stream<SyncStateNotifier<bool>> get streamIsOnline;
 
   void checkStatus();
 }
