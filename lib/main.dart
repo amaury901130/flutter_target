@@ -4,6 +4,7 @@ import 'package:rootstrap_target/globals/preferences.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/theme/variants/light.dart';
 import 'package:rootstrap_target/ui/app_status_widget.dart';
+import 'package:rootstrap_target/ui/screens/auth/auth_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       locale: appLang,
       supportedLocales: LangExtensions.supportedLang,
       localizationsDelegates: LangExtensions.appLocalizationDelegates,
-      home: const _MyHomePage(),
+      home: AuthScreen(),
     );
   }
 }
