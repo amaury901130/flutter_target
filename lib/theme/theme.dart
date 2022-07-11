@@ -6,13 +6,6 @@ abstract class LocalTheme {
 
   LocalTheme({required this.colors});
 
-  get buttonBorderCorner => OutlineInputBorder(
-        borderSide: BorderSide(
-          color: colors.dividerColor,
-          width: 1.0,
-        ),
-      );
-
   ThemeData get data => ThemeData.from(
         colorScheme: colorScheme,
         textTheme: Typography.blackCupertino.copyWith(
@@ -39,13 +32,11 @@ abstract class LocalTheme {
           hoverColor: colors.shadowColor,
           focusColor: colors.shadowColor,
           padding: EdgeInsets.zero,
-          shape: buttonBorderCorner,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             primary: Colors.transparent,
             shadowColor: Colors.transparent,
-            shape: buttonBorderCorner,
           ),
         ),
         textButtonTheme: TextButtonThemeData(
@@ -54,7 +45,6 @@ abstract class LocalTheme {
             backgroundColor: colors.onSurface,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             alignment: Alignment.center,
-            shape: buttonBorderCorner,
           ),
         ),
       );
