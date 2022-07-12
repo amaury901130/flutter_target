@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/resources/resources.dart';
-import 'package:rootstrap_target/theme/spacing.dart';
 import 'package:rootstrap_target/ui/screens/auth/_singin_form.dart';
 import 'package:rootstrap_target/ui/screens/auth/_singup_form.dart';
 import 'package:rootstrap_target/ui/screens/auth/controllers.dart';

@@ -1,5 +1,3 @@
-final spacing = Spacing(4.0);
-
 class Spacing {
   final double spacerSize;
   final double xxs;
