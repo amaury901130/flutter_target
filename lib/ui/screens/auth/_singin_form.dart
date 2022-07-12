@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/resources/resources.dart';
 import 'package:rootstrap_target/ui/components/primary_button.dart';
+import 'package:rootstrap_target/ui/components/secondary_button.dart';
 import 'package:rootstrap_target/ui/components/text_field.dart';
 import 'package:rootstrap_target/ui/screens/auth/controllers.dart';
 
@@ -27,29 +28,55 @@ class SignInForm extends StatelessWidget {
                   TextInput(
                     label: Localize.email_label,
                     controller: _formController.emailTextFieldController,
+                    validator: FieldValidator(isMandatory: true),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: spacing.l),
-                  child: _textFieldContainer(
-                    TextInput(
-                      label: Localize.password_label,
-                      controller: _formController.passTextFieldController,
-                      isSecure: true,
+                _textFieldContainer(
+                  TextInput(
+                    label: Localize.password_label,
+                    controller: _formController.passTextFieldController,
+                    validator: FieldValidator(isMandatory: true),
+                    isSecure: true,
+                  ),
+                ),
+                _contentWithPadding(
+                  SizedBox(
+                    width: Dimen.authButtonWidth,
+                    child: PrimaryButton(
+                      onPressed: () {
+                        if (_formController.formKey.currentState?.validate() ??
+                            false) {
+                          //TODO: login user
+                        }
+                      },
+                      text: Localize.signin_label,
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: spacing.xl),
-                  width: Dimen.authButtonWidth,
-                  child: PrimaryButton(
-                    onPressed: () {
-                      if (_formController.formKey.currentState?.validate() ??
-                          false) {
-                        //TODO: login user
-                      }
-                    },
-                    text: Localize.signin_label,
+                _contentWithPadding(
+                  SecondaryTextButton(
+                    onPressed: () {},
+                    text: Localize.forgot_pass_label,
+                  ),
+                ),
+                _contentWithPadding(
+                  PrimaryTextButton(
+                    onPressed: () {},
+                    text: Localize.signin_facebook_label,
+                  ),
+                ),
+                _contentWithPadding(
+                  Container(
+                    width: Dimen.authButtonWidth,
+                    height: .5,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  padding: spacing.xxxxxl,
+                ),
+                _contentWithPadding(
+                  SecondaryTextButton(
+                    onPressed: () => authStateController.navToSignUp(),
+                    text: Localize.signup_label,
                   ),
                 ),
               ],
@@ -60,9 +87,19 @@ class SignInForm extends StatelessWidget {
     );
   }
 
+  Widget _contentWithPadding(
+    Widget child, {
+    double? padding,
+  }) =>
+      Padding(
+        padding: EdgeInsets.only(top: padding ?? spacing.xl),
+        child: child,
+      );
+
   Widget _textFieldContainer(Widget item) {
-    return SizedBox(
+    return Container(
       width: Dimen.textFieldWidth,
+      padding: EdgeInsets.only(top: spacing.xl),
       child: item,
     );
   }
