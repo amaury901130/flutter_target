@@ -42,9 +42,27 @@ abstract class LocalTheme {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             enableFeedback: true,
+            primary: colors.background,
             backgroundColor: colors.onSurface,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             alignment: Alignment.center,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.zero),
+            ),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: colors.primary),
+            borderRadius: const BorderRadius.all(Radius.zero),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: colors.primary),
+            borderRadius: const BorderRadius.all(Radius.zero),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: colors.error),
+            borderRadius: const BorderRadius.all(Radius.zero),
           ),
         ),
       );
@@ -81,8 +99,8 @@ abstract class LocalTheme {
   final double bodyLFontSize = 20;
   final double bodySFontSize = 8;
   final double navBarFontSize = 12;
-  final double subtitleMFontSize = 12;
-  final double subtitleSFontSize = 8;
+  final double subtitleMFontSize = 16;
+  final double subtitleSFontSize = 12;
   final double inputTextFontSize = 12;
   final double labelFontSize = 12;
   final double labelSFontSize = 8;
@@ -104,9 +122,9 @@ abstract class LocalTheme {
 
   get bodySHeight => 14 / bodyFontSize;
 
-  get subtitleMHeight => 14.4 / subtitleMFontSize;
+  get subtitleMHeight => 16.41 / subtitleMFontSize;
 
-  get subtitleSHeight => 12 / subtitleSFontSize;
+  get subtitleSHeight => 12.89 / subtitleSFontSize;
 
   get inputTextHeight => 13 / inputTextFontSize;
 
@@ -121,6 +139,7 @@ abstract class LocalTheme {
         fontSize: titleXLFontSize,
         height: titleXLHeight,
         letterSpacing: -.07,
+        color: colors.primary,
       );
 
   get titleL => TextStyle(
@@ -152,17 +171,17 @@ abstract class LocalTheme {
       );
 
   get subtitleM => TextStyle(
-        fontFamily: primaryFontBlack,
+        fontFamily: primaryFontMedium,
         fontSize: subtitleMFontSize,
         height: subtitleMHeight,
-        letterSpacing: -.12,
+        letterSpacing: 1.2,
       );
 
   get subtitleS => TextStyle(
-        fontFamily: primaryFontBlack,
+        fontFamily: primaryFontMedium,
         fontSize: subtitleSFontSize,
         height: subtitleSHeight,
-        letterSpacing: .6,
+        letterSpacing: 1.65,
       );
 
   get button => TextStyle(
@@ -180,7 +199,7 @@ abstract class LocalTheme {
         letterSpacing: -.14,
       );
 
-  get bodyS => TextStyle(
+  TextStyle get bodyS => TextStyle(
         fontFamily: primaryFontMedium,
         fontSize: bodySFontSize,
         height: bodySHeight,

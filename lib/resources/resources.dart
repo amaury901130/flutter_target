@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/resources/localization.dart';
+import 'package:rootstrap_target/theme/spacing.dart';
 
 part 'dim.dart';
 
@@ -19,4 +20,8 @@ extension ContextString on BuildContext {
     List<String>? params,
   }) =>
       AppLocalizations.of(this).getString(localize, params);
+}
+
+extension SpacingOnWidget on Widget {
+  Spacing get spacing => Spacing(4.0);
 }

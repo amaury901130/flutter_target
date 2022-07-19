@@ -12,6 +12,12 @@ enum Localize {
   app_name,
   default_connection_error,
   message_connection_success,
+  error_mandatory_field,
+  error_invalid_field,
+  empty,
+  email_label,
+  password_label,
+  signin_label,
 }
 
 class Localization {

@@ -1,21 +1,23 @@
-
 part of 'resources.dart';
+
 /// Add images references here
 /// Call:
 /// Images.app_logo.get()
 /// **/
 enum Images {
   app_logo,
+  circle_top,
 }
 
 extension LoadImage on Images {
   static const assetsFolder = "assets";
   static const imagesResFolder = "$assetsFolder/images";
-  static const icResFolder = "$imagesResFolder/icons";
-  static const svgResFolder = "$imagesResFolder/svg";
+  static const icResFolder = "$assetsFolder/icons";
+  static const svgResFolder = "$assetsFolder/svg";
 
   static final Map<Images, String> _imagesValues = {
     Images.app_logo: '$icResFolder/logo.png',
+    Images.circle_top: '$imagesResFolder/circle_top_image.png',
   };
 
   String get value => _imagesValues[this]!;
@@ -59,7 +61,7 @@ extension LoadImage on Images {
       );
     }
 
-    return get(
+    return img(
       key: key,
       scale: scale,
       width: width,
@@ -91,7 +93,8 @@ extension LoadImage on Images {
 }
 
 class _SvgImage {
-  static Widget asset(String assetPath, {
+  static Widget asset(
+    String assetPath, {
     double? width,
     double? height,
     BoxFit fit = BoxFit.contain,

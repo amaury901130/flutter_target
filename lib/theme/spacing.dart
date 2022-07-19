@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Spacing {
   final double spacerSize;
   final double xxs;
@@ -42,8 +40,4 @@ class Spacing {
       xxxxxl: 10 * spacerSize,
     );
   }
-}
-
-extension ThemeSpacing on ThemeData {
-  Spacing get spacing => Spacing(4.0);
 }
