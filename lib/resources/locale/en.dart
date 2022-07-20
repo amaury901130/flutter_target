@@ -9,5 +9,9 @@ const Map<Localize, String> localization = {
   Localize.empty: '',
   Localize.email_label: 'email',
   Localize.password_label: 'password',
+  Localize.repeat_password_label: 'repeat password',
   Localize.signin_label: 'SIGN IN',
+  Localize.signup_label: 'SIGN UP',
+  Localize.forgot_pass_label: 'Forgot your password?',
+  Localize.signin_facebook_label: 'CONNECT WITH FACEBOOK',
 };

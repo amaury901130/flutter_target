@@ -17,7 +17,11 @@ enum Localize {
   empty,
   email_label,
   password_label,
+  repeat_password_label,
   signin_label,
+  signup_label,
+  forgot_pass_label,
+  signin_facebook_label,
 }
 
 class Localization {

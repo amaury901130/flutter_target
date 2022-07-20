@@ -35,15 +35,16 @@ abstract class LocalTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Colors.transparent,
-            shadowColor: Colors.transparent,
+            enableFeedback: true,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            alignment: Alignment.center,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.zero),
+            ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            enableFeedback: true,
-            primary: colors.background,
-            backgroundColor: colors.onSurface,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             alignment: Alignment.center,
             shape: const RoundedRectangleBorder(
