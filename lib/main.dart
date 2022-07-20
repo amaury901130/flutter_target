@@ -30,14 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class _MyHomePage extends StatelessWidget {
-  const _MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: AppStatusWidget(),
-    );
-  }
-}
