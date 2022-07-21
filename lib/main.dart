@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rootstrap_target/component_init.dart';
+import 'package:rootstrap_target/domain/services/abstract/user_service.dart';
 import 'package:rootstrap_target/globals/preferences.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/theme/variants/light.dart';
@@ -24,9 +25,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: LightTheme().data,
       locale: appLang,
+      themeMode: ThemeMode.light,
       supportedLocales: LangExtensions.supportedLang,
       localizationsDelegates: LangExtensions.appLocalizationDelegates,
-      home: AuthScreen(),
+      initialRoute: UserService.instance.isSessionActive
+          ? AppStatusWidget.route
+          : AuthScreen.route,
+      routes: {
+        AuthScreen.route: (_) => AuthScreen(),
+        AppStatusWidget.route: (_) => const AppStatusWidget(),
+      },
     );
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AuthStateController {
-  final pageController = PageController();
+  final _pageController = PageController(initialPage: 0);
   final int _signInPagePos = 0;
   final int _signUpPagePos = 1;
   final _navDuration = const Duration(milliseconds: 500);
+
+  get pageController => _pageController;
+
+  AuthStateController();
 
   void navToSignIn() => _goToPage(_signInPagePos);
 

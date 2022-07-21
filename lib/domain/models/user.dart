@@ -1,9 +1,11 @@
+
+
 class User {
   final Avatar? avatar;
   final String createdAt;
   final String email;
   final String firstName;
-  final String gender;
+  String? gender;
   final int id;
   final String lastName;
   final String provider;
@@ -63,12 +65,12 @@ class User {
 class Avatar {
   final AvatarUrl? normal;
   final AvatarUrl? smallThumb;
-  final String url;
+  final String? url;
 
   Avatar({
     this.normal,
     this.smallThumb,
-    required this.url,
+    this.url,
   });
 
   factory Avatar.fromJson(Map<String, dynamic> json) {
@@ -96,7 +98,7 @@ class Avatar {
 }
 
 class AvatarUrl {
-  final String url;
+  final String? url;
 
   AvatarUrl({required this.url});
 

@@ -4,16 +4,18 @@ import 'package:rootstrap_target/resources/resources.dart';
 import 'package:rootstrap_target/ui/components/primary_button.dart';
 import 'package:rootstrap_target/ui/components/secondary_button.dart';
 import 'package:rootstrap_target/ui/components/text_field.dart';
-import 'package:rootstrap_target/ui/screens/auth/controllers.dart';
 
-class SignInForm extends StatelessWidget {
-  final AuthStateController authStateController;
+class SignInForm extends StatefulWidget {
+  final VoidCallback onSignUp;
+
+  const SignInForm({Key? key, required this.onSignUp}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SignInForm();
+}
+
+class _SignInForm extends State<SignInForm> {
   final _formController = _SignInFormController();
-
-  SignInForm({
-    Key? key,
-    required this.authStateController,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class SignInForm extends StatelessWidget {
                 ),
                 _contentWithPadding(
                   SecondaryTextButton(
-                    onPressed: () => authStateController.navToSignUp(),
+                    onPressed: widget.onSignUp,
                     text: Localize.signup_label,
                   ),
                 ),

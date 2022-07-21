@@ -22,6 +22,4 @@ extension ContextString on BuildContext {
       AppLocalizations.of(this).getString(localize, params);
 }
 
-extension SpacingOnWidget on Widget {
-  Spacing get spacing => Spacing(4.0);
-}
+Spacing get spacing => Spacing();
