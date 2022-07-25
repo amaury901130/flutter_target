@@ -27,29 +27,26 @@ class _SignUpForm extends State<SignUpForm> {
   _SignUpForm();
 
   void _signUp(BuildContext context) async {
-    if (!_formController.isValidPasswords) {
-      setState(() {
-        _isLoading = false;
-        _formController.passwordValidator = FieldValidator(
-          isMandatory: true,
-          hasError: true,
-          errorMessage: Localize.error_password_equals,
-        );
-      });
-      _formController.validateForm();
+    final isValidForm = _formController.isValidEmail;
+    final isValidPassword = _formController.isValidPasswords;
+    final isPasswordsEquals = _formController.isPasswordsEquals;
+
+    if (isValidForm && isValidPassword && isPasswordsEquals) {
+      await _formController.signUp().then(
+        (isSignedUp) {
+          //TODO: manage error
+          _notifyLoadingState(false);
+          if (isSignedUp.data ?? false) {
+            Navigator.of(context).pushNamed(AppStatusWidget.route);
+          } else {
+            _notifyDefaultError(Localize.default_connection_error);
+          }
+        },
+      );
       return;
     }
-    //TODO: manage error
-    await _formController.signUp().then(
-      (isSignedUp) {
-        _notifyLoadingState(false);
-        if (isSignedUp.data ?? false) {
-          Navigator.of(context).pushNamed(AppStatusWidget.route);
-        } else {
-          _notifyDefaultError();
-        }
-      },
-    );
+
+    _notifyLoadingState(false);
   }
 
   void _notifyLoadingState(bool isLoading) {
@@ -58,15 +55,16 @@ class _SignUpForm extends State<SignUpForm> {
     });
   }
 
-  void _notifyDefaultError() {
+  void _notifyDefaultError(Localize error) {
     setState(() {
+      _isLoading = false;
       _formController.emailValidator = FieldValidator(
         isMandatory: true,
-        hasError: false,
-        errorMessage: Localize.default_connection_error,
+        hasError: true,
+        errorMessage: error,
       );
+      _formController.emailValidator.isValid(null);
     });
-    _formController.validateForm();
   }
 
   @override
@@ -106,11 +104,8 @@ class _SignUpForm extends State<SignUpForm> {
                     child: PrimaryButton(
                       isLoading: _isLoading,
                       onPressed: () {
-                        if (_formController.formKey.currentState?.validate() ??
-                            false) {
-                          _notifyLoadingState(true);
-                          _signUp(context);
-                        }
+                        _notifyLoadingState(true);
+                        _signUp(context);
                       },
                       text: Localize.signup_label,
                     ),
@@ -181,9 +176,23 @@ class _SignUpFormController {
   //TODO: setup gender
   String get genderFieldValue => '';
 
-  bool get isValidPasswords => passFieldValue == passConfirmFieldValue;
+  bool get isValidPasswords => passwordValidator.isValid(passFieldValue);
+
+  bool get isPasswordsEquals {
+    final isPasswordTheSame = passFieldValue == passConfirmFieldValue;
+    if (!isPasswordTheSame) {
+      passwordValidator = FieldValidator(
+        isMandatory: true,
+        hasError: true,
+        errorMessage: Localize.error_password_equals,
+      );
+    }
+    return isPasswordTheSame;
+  }
 
   static const _validationTime = 500;
+
+  bool get isValidEmail => emailValidator.isValid(passFieldValue);
 
   void validateForm() {
     Future.delayed(const Duration(milliseconds: _validationTime), () {
