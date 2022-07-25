@@ -27,6 +27,7 @@ class _SignUpForm extends State<SignUpForm> {
   _SignUpForm();
 
   void _signUp(BuildContext context) async {
+    _notifyLoadingState(true);
     final isValidForm = _formController.isValidEmail;
     final isValidPassword = _formController.isValidPasswords;
     final isPasswordsEquals = _formController.isPasswordsEquals;
@@ -35,18 +36,19 @@ class _SignUpForm extends State<SignUpForm> {
       await _formController.signUp().then(
         (isSignedUp) {
           //TODO: manage error
-          _notifyLoadingState(false);
           if (isSignedUp.data ?? false) {
             Navigator.of(context).pushNamed(AppStatusWidget.route);
           } else {
-            _notifyDefaultError(Localize.default_connection_error);
+            _notifyDefaultError();
           }
         },
-      );
+      ).onError((error, stackTrace) {
+        _notifyDefaultError();
+      });
       return;
     }
 
-    _notifyLoadingState(false);
+    _notifyDefaultError();
   }
 
   void _notifyLoadingState(bool isLoading) {
@@ -55,15 +57,14 @@ class _SignUpForm extends State<SignUpForm> {
     });
   }
 
-  void _notifyDefaultError(Localize error) {
+  void _notifyDefaultError() {
     setState(() {
       _isLoading = false;
       _formController.emailValidator = FieldValidator(
         isMandatory: true,
         hasError: true,
-        errorMessage: error,
+        errorMessage: Localize.default_connection_error,
       );
-      _formController.emailValidator.isValid(null);
     });
   }
 
@@ -103,10 +104,7 @@ class _SignUpForm extends State<SignUpForm> {
                     width: Dimen.authButtonWidth,
                     child: PrimaryButton(
                       isLoading: _isLoading,
-                      onPressed: () {
-                        _notifyLoadingState(true);
-                        _signUp(context);
-                      },
+                      onPressed: () => _signUp(context),
                       text: Localize.signup_label,
                     ),
                   ),
@@ -190,15 +188,7 @@ class _SignUpFormController {
     return isPasswordTheSame;
   }
 
-  static const _validationTime = 500;
-
   bool get isValidEmail => emailValidator.isValid(passFieldValue);
-
-  void validateForm() {
-    Future.delayed(const Duration(milliseconds: _validationTime), () {
-      _formKey.currentState?.validate();
-    });
-  }
 
   Future<ServiceResponse<bool>> signUp() {
     return _userService.signUp(

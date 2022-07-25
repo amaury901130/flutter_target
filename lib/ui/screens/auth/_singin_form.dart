@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rootstrap_target/domain/services/abstract/user_service.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/resources/resources.dart';
+import 'package:rootstrap_target/ui/app_status_widget.dart';
 import 'package:rootstrap_target/ui/components/primary_button.dart';
 import 'package:rootstrap_target/ui/components/secondary_button.dart';
 import 'package:rootstrap_target/ui/components/text_field.dart';
+import 'package:rootstrap_target/util/service_response.dart';
 
 class SignInForm extends StatefulWidget {
   final VoidCallback onSignUp;
@@ -16,6 +19,48 @@ class SignInForm extends StatefulWidget {
 
 class _SignInForm extends State<SignInForm> {
   final _formController = _SignInFormController();
+  bool _isLoading = false;
+
+  Future<void> _signIn(BuildContext context) async {
+    _notifyLoadingState(true);
+    final isValidEmail = _formController.isValidEmail;
+    final isValidPass = _formController.isValidPasswords;
+
+    if (isValidEmail && isValidPass) {
+      await _formController.signIn().then(
+        (isSignedUp) {
+          //TODO: manage error
+          if (isSignedUp.data ?? false) {
+            Navigator.of(context).pushNamed(AppStatusWidget.route);
+          } else {
+            _notifyDefaultError();
+          }
+        },
+      ).onError((error, stackTrace) {
+        _notifyDefaultError();
+      });
+      return;
+    }
+
+    _notifyDefaultError();
+  }
+
+  void _notifyDefaultError() {
+    setState(() {
+      _isLoading = false;
+      _formController.emailValidator = FieldValidator(
+        isMandatory: true,
+        hasError: true,
+        errorMessage: Localize.default_connection_error,
+      );
+    });
+  }
+
+  void _notifyLoadingState(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +75,14 @@ class _SignInForm extends State<SignInForm> {
                   TextInput(
                     label: Localize.email_label,
                     controller: _formController.emailTextFieldController,
-                    validator: FieldValidator(isMandatory: true),
+                    validator: _formController.emailValidator,
                   ),
                 ),
                 _textFieldContainer(
                   TextInput(
                     label: Localize.password_label,
                     controller: _formController.passTextFieldController,
-                    validator: FieldValidator(isMandatory: true),
+                    validator: _formController.passValidator,
                     isSecure: true,
                   ),
                 ),
@@ -45,12 +90,8 @@ class _SignInForm extends State<SignInForm> {
                   SizedBox(
                     width: Dimen.authButtonWidth,
                     child: PrimaryButton(
-                      onPressed: () {
-                        if (_formController.formKey.currentState?.validate() ??
-                            false) {
-                          //TODO: login user
-                        }
-                      },
+                      isLoading: _isLoading,
+                      onPressed: () => _signIn(context),
                       text: Localize.signin_label,
                     ),
                   ),
@@ -108,7 +149,23 @@ class _SignInForm extends State<SignInForm> {
 }
 
 class _SignInFormController {
+  UserService get _userService => UserService.instance;
   final emailTextFieldController = TextEditingController();
   final passTextFieldController = TextEditingController();
+  var emailValidator = FieldValidator(isMandatory: true);
+  final passValidator = FieldValidator(isMandatory: true);
+
+  String get emailFieldValue => emailTextFieldController.value.text;
+
+  String get passFieldValue => passTextFieldController.value.text;
+
+  bool get isValidPasswords => passValidator.isValid(passFieldValue);
+
+  bool get isValidEmail => emailValidator.isValid(passFieldValue);
+
   final formKey = GlobalKey<FormState>();
+
+  Future<ServiceResponse<bool>> signIn() async {
+    return _userService.signIn(emailFieldValue, passFieldValue);
+  }
 }
