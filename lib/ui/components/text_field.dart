@@ -40,14 +40,19 @@ class TextInput extends StatelessWidget {
               fillColor: theme.colorScheme.background,
               hintText: (hint != null) ? context.getString(hint!) : null,
             ),
-            validator: (input) {
-              if (validator != null && !validator!.isValid(input)) {
-                return context.getString(validator!.errorMessage);
-              }
-              return null;
-            },
           ),
         ),
+        (validator?.hasError ?? false)
+            ? Padding(
+                padding: EdgeInsets.only(top: spacing.xxs),
+                child: Text(
+                  context.getString(validator!.errorMessage),
+                  style: theme.textTheme.subtitle2?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }
@@ -76,6 +81,8 @@ class FieldValidator {
       return false;
     }
 
+    hasError = true;
+
     if (isMandatory && (text == null || text.isEmpty)) {
       errorMessage = Localize.error_mandatory_field;
       return false;
@@ -93,6 +100,7 @@ class FieldValidator {
     if (regex != null && (text == null || !RegExp(regex!).hasMatch(text))) {
       return false;
     }
+    hasError = false;
     return true;
   }
 }
