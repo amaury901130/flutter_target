@@ -27,11 +27,11 @@ class _SignUpForm extends State<SignUpForm> {
   _SignUpForm();
 
   void _signUp(BuildContext context) async {
-    var isValidForm = _formController.isValidEmail;
-    isValidForm = _formController.isValidPasswords && isValidForm;
-    isValidForm = _formController.isPasswordsEquals && isValidForm;
+    final isValidForm = _formController.isValidEmail;
+    final isValidPassword = _formController.isValidPasswords;
+    final isPasswordsEquals = _formController.isPasswordsEquals;
 
-    if (isValidForm) {
+    if (isValidForm && isValidPassword && isPasswordsEquals) {
       await _formController.signUp().then(
         (isSignedUp) {
           //TODO: manage error
