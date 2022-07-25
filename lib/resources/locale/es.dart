@@ -14,4 +14,5 @@ const Map<Localize, String> localization = {
   Localize.signup_label: 'SIGN UP',
   Localize.forgot_pass_label: 'Olvidaste tu contraseña?',
   Localize.signin_facebook_label: 'CONTINUAR CON FACEBOOK',
+  Localize.error_password_equals: 'Las contraseñas no coinciden',
 };

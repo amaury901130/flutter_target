@@ -18,6 +18,7 @@ enum Localize {
   email_label,
   password_label,
   repeat_password_label,
+  error_password_equals,
   signin_label,
   signup_label,
   forgot_pass_label,

@@ -1,19 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:rootstrap_target/domain/services/abstract/user_service.dart';
 import 'package:rootstrap_target/resources/locale/localize.dart';
 import 'package:rootstrap_target/resources/resources.dart';
+import 'package:rootstrap_target/ui/app_status_widget.dart';
 import 'package:rootstrap_target/ui/components/primary_button.dart';
 import 'package:rootstrap_target/ui/components/secondary_button.dart';
 import 'package:rootstrap_target/ui/components/text_field.dart';
-import 'package:rootstrap_target/ui/screens/auth/controllers.dart';
+import 'package:rootstrap_target/util/service_response.dart';
 
-class SignUpForm extends StatelessWidget {
-  final AuthStateController authStateController;
-  final _formController = _SignUpFormController();
+class SignUpForm extends StatefulWidget {
+  final VoidCallback onSignIn;
 
-  SignUpForm({
+  const SignUpForm({
     Key? key,
-    required this.authStateController,
+    required this.onSignIn,
   }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SignUpForm();
+}
+
+class _SignUpForm extends State<SignUpForm> {
+  final _formController = _SignUpFormController();
+  var _isLoading = false;
+
+  _SignUpForm();
+
+  void _signUp(BuildContext context) async {
+    if (!_formController.isValidPasswords) {
+      setState(() {
+        _isLoading = false;
+        _formController.passwordValidator = FieldValidator(
+          isMandatory: true,
+          hasError: true,
+          errorMessage: Localize.error_password_equals,
+        );
+      });
+      _formController.validateForm();
+      return;
+    }
+    //TODO: manage error
+    await _formController.signUp().then(
+      (isSignedUp) {
+        _notifyLoadingState(false);
+        if (isSignedUp.data ?? false) {
+          Navigator.of(context).pushNamed(AppStatusWidget.route);
+        } else {
+          _notifyDefaultError();
+        }
+      },
+    );
+  }
+
+  void _notifyLoadingState(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
+
+  void _notifyDefaultError() {
+    setState(() {
+      _formController.emailValidator = FieldValidator(
+        isMandatory: true,
+        hasError: false,
+        errorMessage: Localize.default_connection_error,
+      );
+    });
+    _formController.validateForm();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +82,7 @@ class SignUpForm extends StatelessWidget {
                   TextInput(
                     label: Localize.email_label,
                     controller: _formController.emailTextFieldController,
-                    validator: FieldValidator(isMandatory: true),
+                    validator: _formController.emailValidator,
                   ),
                 ),
                 _textFieldContainer(
@@ -36,7 +90,7 @@ class SignUpForm extends StatelessWidget {
                     label: Localize.password_label,
                     controller: _formController.passTextFieldController,
                     isSecure: true,
-                    validator: FieldValidator(isMandatory: true),
+                    validator: _formController.passwordValidator,
                   ),
                 ),
                 _textFieldContainer(
@@ -44,17 +98,18 @@ class SignUpForm extends StatelessWidget {
                     label: Localize.repeat_password_label,
                     controller: _formController.passConfirmTextFieldController,
                     isSecure: true,
-                    validator: FieldValidator(isMandatory: true),
                   ),
                 ),
                 _contentWithPadding(
                   SizedBox(
                     width: Dimen.authButtonWidth,
                     child: PrimaryButton(
+                      isLoading: _isLoading,
                       onPressed: () {
                         if (_formController.formKey.currentState?.validate() ??
                             false) {
-                          //TODO: login user
+                          _notifyLoadingState(true);
+                          _signUp(context);
                         }
                       },
                       text: Localize.signup_label,
@@ -71,7 +126,7 @@ class SignUpForm extends StatelessWidget {
                 ),
                 _contentWithPadding(
                   SecondaryTextButton(
-                    onPressed: () => authStateController.navToSignIn(),
+                    onPressed: widget.onSignIn,
                     text: Localize.signin_label,
                   ),
                 ),
@@ -103,7 +158,44 @@ class SignUpForm extends StatelessWidget {
 
 class _SignUpFormController {
   final emailTextFieldController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final passTextFieldController = TextEditingController();
   final passConfirmTextFieldController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+
+  var passwordValidator = FieldValidator(isMandatory: true);
+
+  GlobalKey<FormState> get formKey => _formKey;
+
+  get _userService => UserService.instance;
+
+  var emailValidator = FieldValidator(isMandatory: true);
+
+  get streamNetworkLoading => _userService.streamNetworkLoading;
+
+  String get emailFieldValue => emailTextFieldController.value.text;
+
+  String get passFieldValue => passTextFieldController.value.text;
+
+  String get passConfirmFieldValue => passConfirmTextFieldController.value.text;
+
+  //TODO: setup gender
+  String get genderFieldValue => '';
+
+  bool get isValidPasswords => passFieldValue == passConfirmFieldValue;
+
+  static const _validationTime = 500;
+
+  void validateForm() {
+    Future.delayed(const Duration(milliseconds: _validationTime), () {
+      _formKey.currentState?.validate();
+    });
+  }
+
+  Future<ServiceResponse<bool>> signUp() {
+    return _userService.signUp(
+      emailFieldValue,
+      passFieldValue,
+      genderFieldValue,
+    );
+  }
 }

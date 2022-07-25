@@ -35,6 +35,7 @@ class TextInput extends StatelessWidget {
           child: TextFormField(
             textAlign: TextAlign.center,
             obscureText: isSecure,
+            controller: controller,
             decoration: InputDecoration(
               fillColor: theme.colorScheme.background,
               hintText: (hint != null) ? context.getString(hint!) : null,
@@ -58,6 +59,7 @@ class FieldValidator {
   final bool isMandatory;
   final String? regex;
   Localize errorMessage;
+  bool hasError;
 
   FieldValidator({
     this.min,
@@ -65,9 +67,15 @@ class FieldValidator {
     this.isMandatory = false,
     this.regex,
     this.errorMessage = Localize.empty,
+    this.hasError = false,
   });
 
   bool isValid(String? text) {
+    if (hasError) {
+      hasError = false;
+      return false;
+    }
+
     if (isMandatory && (text == null || text.isEmpty)) {
       errorMessage = Localize.error_mandatory_field;
       return false;

@@ -11,7 +11,7 @@ class Spacing {
   final double xxxxl;
   final double xxxxxl;
 
-  Spacing._({
+  const Spacing._({
     required this.spacerSize,
     required this.xxs,
     required this.xs,
@@ -25,7 +25,7 @@ class Spacing {
     required this.xxxxxl,
   });
 
-  factory Spacing(double spacerSize) {
+  factory Spacing({double spacerSize = 4.0}) {
     return Spacing._(
       spacerSize: spacerSize,
       xxs: 1 * spacerSize,

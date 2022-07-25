@@ -5,7 +5,7 @@ part of 'resources.dart';
 class Dimen {
   static const primaryButtonHeight = 37.0;
 
-  static const loadingSpinnerSize = 32.0;
+  static const loadingSpinnerSize = 28.0;
 
   static const textFieldWidth = 188.0;
 

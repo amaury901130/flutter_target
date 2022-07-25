@@ -6,6 +6,7 @@ import 'package:rootstrap_target/ui/screens/auth/_singup_form.dart';
 import 'package:rootstrap_target/ui/screens/auth/controllers.dart';
 
 class AuthScreen extends StatelessWidget {
+  static const route = '/auth';
   final _authStateController = AuthStateController();
 
   AuthScreen({Key? key}) : super(key: key);
@@ -33,8 +34,8 @@ class AuthScreen extends StatelessWidget {
                       pageSnapping: false,
                       controller: _authStateController.pageController,
                       children: [
-                        SignInForm(authStateController: _authStateController),
-                        SignUpForm(authStateController: _authStateController),
+                        SignInForm(onSignUp: _authStateController.navToSignUp),
+                        SignUpForm(onSignIn: _authStateController.navToSignIn),
                       ],
                     ),
                   ),
